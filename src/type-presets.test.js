@@ -13,6 +13,10 @@ describe('scss', function() {
 
 			p {
 				@include t.typescale(1);
+			}
+
+			.u-typescale-2 {
+				@include t.typescale(2, $important: true);
 			}`
 		const css = `
 			@media screen and (min-width: 0) {
@@ -59,6 +63,11 @@ describe('scss', function() {
 			p {
 				font-size: var(--typescale-1-font-size);
 				line-height: var(--typescale-1-line-height);
+			}
+
+			.u-typescale-2 {
+				font-size: var(--typescale-2-font-size) !important;
+				line-height: var(--typescale-2-line-height) !important;
 			}`
 		expect(scss).toRender(css)
 	})
@@ -83,7 +92,7 @@ describe('scss', function() {
 			}
 
 			.preset-2 {
-				@include t.type-preset(2);
+				@include t.type-preset(2, $important: true);
 			}
 
 			.preset-3 {
@@ -141,12 +150,12 @@ describe('scss', function() {
 			}
 
 			.preset-2 {
-				font-size: var(--typescale-1-font-size);
-				line-height: var(--typescale-1-line-height);
-				font-family: Comic Sans;
-				font-weight: normal;
-				text-transform: uppercase;
-				letter-spacing: normal;
+				font-size: var(--typescale-1-font-size) !important;
+				line-height: var(--typescale-1-line-height) !important;
+				font-family: Comic Sans !important;
+				font-weight: normal !important;
+				text-transform: uppercase !important;
+				letter-spacing: normal !important;
 			}
 
 			.preset-3 {

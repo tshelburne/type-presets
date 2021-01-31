@@ -133,7 +133,7 @@ $__presets: ();
 }
 
 @mixin typescale($key, $important: false) {
-	$postfix: if($important, ' !important', '');
+	$postfix: if($important, '!important', '');
 
 	font-size: var(--typescale-#{$key}-font-size)#{$postfix};
 	line-height: var(--typescale-#{$key}-line-height)#{$postfix};
