@@ -37,6 +37,15 @@ $default-transform: none !default;
 ///   );
 $default-spacing: normal !default;
 
+/// Value to add to font size when line height is not specified in typescale definition
+/// @access public
+/// @type number
+/// @example scss - Usage
+///   @use 'type-presets' as t with (
+///     $line-height-scale: 10
+///   );
+$line-height-scale: 8;
+
 /// Default breakpoints to be used for responsive typescales - note that the values should be increasing
 /// @access public
 /// @type Map
@@ -111,7 +120,7 @@ $presets: () !default;
 		$media: list.nth(map.keys($__breakpoints-with-min), $i);
 		$scale: (
 			font-size: $size,
-			line-height: $size + 8,
+			line-height: $size + $line-height-scale,
 		);
 		$scales: map.merge(
 			$scales,

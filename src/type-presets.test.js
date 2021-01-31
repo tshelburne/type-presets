@@ -314,6 +314,50 @@ describe('scss', function() {
 			}`
 		expect(scss).toRender(css)
 	})
+
+	it('supports customizing line heights', function() {
+		it('supports defining and using typescales', function() {
+		const scss = `
+			@use 'type-presets' as t with (
+				$line-height-scale: 10,
+				$typescales: (
+					1: 12px (md: 14px, xl: 16px),
+				)
+			);`
+		const css = `
+			@media screen and (min-width: 0) {
+				:root {
+					--typescale-1-font-size: 12px;
+					--typescale-1-line-height: 22px;
+				}
+			}
+			@media screen and (min-width: 600px) {
+				:root {
+					--typescale-1-font-size: 12px;
+					--typescale-1-line-height: 22px;
+				}
+			}
+			@media screen and (min-width: 900px) {
+				:root {
+					--typescale-1-font-size: 14px;
+					--typescale-1-line-height: 24px;
+				}
+			}
+			@media screen and (min-width: 1200px) {
+				:root {
+					--typescale-1-font-size: 14px;
+					--typescale-1-line-height: 24px;
+				}
+			}
+			@media screen and (min-width: 1800px) {
+				:root {
+					--typescale-1-font-size: 16px;
+					--typescale-1-line-height: 26px;
+				}
+			}`
+		expect(scss).toRender(css)
+	})
+	})
 })
 
 // ---------------- HELPERS ----------------
