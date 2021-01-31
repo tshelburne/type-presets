@@ -1,10 +1,24 @@
 {
   "name": "type-presets",
   "version": "0.1.0",
-  "author": "Tim Shelburne",
+  "author": "Tim Shelburne <shelburt02@gmail.com> (https://github.com/tshelburne/)",
   "description": "Tools for using type presets in CSS",
-  "license": "MIT",
   "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "typography",
+    "scss",
+    "presets",
+    "superfriendly"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tshelburne/type-presets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tshelburne/react-children-by-type/issues"
+  },
+  "homepage": "https://github.com/tshelburne/react-children-by-type#readme",
   "scripts": {
     "test": "mocha"
   },
