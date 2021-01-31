@@ -37,16 +37,29 @@ $default-transform: none !default;
 ///   );
 $default-spacing: normal !default;
 
-/// Default breakpoints to be used for responsive typescales
+/// Default breakpoints to be used for responsive typescales - note that the values should be increasing
 /// @access public
 /// @type Map
+/// @example scss - Usage
+///   @use 'type-presets' as t with (
+///     $breakpoints: (
+///       small: 400px
+///       med: 1000px
+///       largo: 2000px
+///     ),
+///     $typescales: (
+///       1: 12px (med: 14px, largo: 16px),
+///       2: 14px (small: 20px),
+///     )
+///   );
 $breakpoints: (
-	xs: 0,
 	sm: 600px,
 	md: 900px,
 	lg: 1200px,
 	xl: 1800px,
 ) !default;
+
+$__breakpoints-with-min: map.merge((__min: 0), $breakpoints);
 
 /// A map of basic typescale definitions
 /// @access public
@@ -75,23 +88,27 @@ $presets: () !default;
 
 // ================================= HELPERS ==================================
 
-@function __map-get-default($map, $key, $def) {
-	@return if(map.has-key($map, $key), map.get($map, $key), $def);
+@function __map-get-default($map, $k, $def) {
+	@return if(map.has-key($map, $k), map.get($map, $k), $def);
+}
+
+@function __list-last($list) {
+	@return list.nth($list, list.length($list));
 }
 
 // =============================== DEFINITIONS ================================
 
-@function __define-typescale($xs, $scaled: ()) {
-	$sm: __map-get-default($scaled, sm, $xs);
-	$md: __map-get-default($scaled, md, $sm);
-	$lg: __map-get-default($scaled, lg, $md);
-	$xl: __map-get-default($scaled, xl, $lg);
-	$sizes: $xs $sm $md $lg $xl;
+@function __define-typescale($base, $scaled: ()) {
+	$sizes: $base;
+	@each $k in map.keys($breakpoints) {
+		$size: __map-get-default($scaled, $k, __list-last($sizes));
+		$sizes: list.append($sizes, $size);
+	}
 
 	$scales: ();
 	@for $i from 1 through list.length($sizes) {
 		$size: list.nth($sizes, $i);
-		$media: list.nth(map.keys($breakpoints), $i);
+		$media: list.nth(map.keys($__breakpoints-with-min), $i);
 		$scale: (
 			font-size: $size,
 			line-height: $size + 8,
@@ -119,22 +136,22 @@ $presets: () !default;
 // ================================== MIXINS ==================================
 
 $__typescales: ();
-@each $key, $def in $typescales {
-	$xs: list.nth($def, 1);
-	$scaled: list.nth($def, 2);
+@each $k, $v in $typescales {
+	$xs: list.nth($v, 1);
+	$scaled: list.nth($v, 2);
 	$new-scale: __define-typescale($xs, $scaled);
-	$__typescales: map.merge($__typescales, ($key: $new-scale));
+	$__typescales: map.merge($__typescales, ($k: $new-scale));
 }
 
 $__presets: ();
-@each $key, $def in $presets {
-	$new-preset: __define-type-preset($def);
-	$__presets: map.merge($__presets, ($key: $new-preset));
+@each $k, $v in $presets {
+	$new-preset: __define-type-preset($v);
+	$__presets: map.merge($__presets, ($k: $new-preset));
 }
 
 /// Use typescale in typographic element
 /// @access public
-/// @param {string} $key - name of pre-defined typescale from map
+/// @param {string} $k - name of pre-defined typescale from map
 /// @param {bool} $important [false] - mark properties as !important in CSS
 /// @example scss - Usage
 ///   @use 'type-presets' as t;
@@ -147,16 +164,16 @@ $__presets: ();
 ///     font-size: var(--typescale-1-font-size);
 ///     line-height: var(--typescale-1-line-height);
 ///   }
-@mixin typescale($key, $important: false) {
+@mixin typescale($k, $important: false) {
 	$postfix: if($important, '!important', '');
 
-	font-size: var(--typescale-#{$key}-font-size)#{$postfix};
-	line-height: var(--typescale-#{$key}-line-height)#{$postfix};
+	font-size: var(--typescale-#{$k}-font-size)#{$postfix};
+	line-height: var(--typescale-#{$k}-line-height)#{$postfix};
 }
 
 /// Use type-preset in typographic element
 /// @access public
-/// @param {string} $key - name of pre-defined type preset from map
+/// @param {string} $k - name of pre-defined type preset from map
 /// @param {bool} $important [false] - mark properties as !important in CSS
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
@@ -177,8 +194,8 @@ $__presets: ();
 ///     text-transform: none;
 ///     letter-spacing: 0.5;
 ///   }
-@mixin type-preset($key, $important: false) {
-	$preset: map.get($__presets, $key);
+@mixin type-preset($k, $important: false) {
+	$preset: map.get($__presets, $k);
 	$postfix: if($important, ' !important', '');
 
 	@include typescale(map.get($preset, 'scale'), $important);
@@ -219,15 +236,15 @@ $__presets: ();
 @mixin utility-classes($namespace: '') {
 	$prefix: if($namespace == '', '', '#{$namespace}-');
 
-	@each $key in map.keys($__typescales) {
-		.#{$prefix}u-typescale-#{$key} {
-			@include typescale($key, $important: true);
+	@each $k in map.keys($__typescales) {
+		.#{$prefix}u-typescale-#{$k} {
+			@include typescale($k, $important: true);
 		}
 	}
 
-	@each $key in map.keys($__presets) {
-		.#{$prefix}u-type-preset-#{$key} {
-			@include type-preset($key, $important: true);
+	@each $k in map.keys($__presets) {
+		.#{$prefix}u-type-preset-#{$k} {
+			@include type-preset($k, $important: true);
 		}
 	}
 }
@@ -235,13 +252,13 @@ $__presets: ();
 // =================================== INIT ===================================
 
 :root {
-	@each $bp, $size in $breakpoints {
+	@each $bp, $size in $__breakpoints-with-min {
 		@media screen and (min-width: $size) {
-			@each $key, $def in $__typescales {
-				$scale: map.get(map.get($__typescales, $key), $bp);
+			@each $k in map.keys($__typescales) {
+				$scale: map.get(map.get($__typescales, $k), $bp);
 
-				--typescale-#{$key}-font-size: #{map.get($scale, font-size)};
-				--typescale-#{$key}-line-height: #{map.get($scale, line-height)};
+				--typescale-#{$k}-font-size: #{map.get($scale, font-size)};
+				--typescale-#{$k}-line-height: #{map.get($scale, line-height)};
 			}
 		}
 	}

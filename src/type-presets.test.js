@@ -265,6 +265,55 @@ describe('scss', function() {
 			}`
 		expect(scss).toRender(css)
 	})
+
+	it('supports custom breakpoints for typescales', function() {
+		const scss = `
+			@use 'type-presets' as t with (
+				$breakpoints: (
+					small: 400px,
+					med: 500px,
+					largo: 2000px,
+				),
+				$typescales: (
+					1: 12px (med: 14px, largo: 16px),
+					2: 14px (small: 20px),
+				)
+			);`
+		const css = `
+			@media screen and (min-width: 0) {
+				:root {
+					--typescale-1-font-size: 12px;
+					--typescale-1-line-height: 20px;
+					--typescale-2-font-size: 14px;
+					--typescale-2-line-height: 22px;
+				}
+			}
+			@media screen and (min-width: 400px) {
+				:root {
+					--typescale-1-font-size: 12px;
+					--typescale-1-line-height: 20px;
+					--typescale-2-font-size: 20px;
+					--typescale-2-line-height: 28px;
+				}
+			}
+			@media screen and (min-width: 500px) {
+				:root {
+					--typescale-1-font-size: 14px;
+					--typescale-1-line-height: 22px;
+					--typescale-2-font-size: 20px;
+					--typescale-2-line-height: 28px;
+				}
+			}
+			@media screen and (min-width: 2000px) {
+				:root {
+					--typescale-1-font-size: 16px;
+					--typescale-1-line-height: 24px;
+					--typescale-2-font-size: 20px;
+					--typescale-2-line-height: 28px;
+				}
+			}`
+		expect(scss).toRender(css)
+	})
 })
 
 // ---------------- HELPERS ----------------
