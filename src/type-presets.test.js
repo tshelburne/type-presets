@@ -20,7 +20,7 @@ describe('scss', function() {
 			}`
 		const css = `
 			@media screen and (min-width: 0) {
-				:global {
+				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
@@ -28,7 +28,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 600px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
@@ -36,7 +36,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 900px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 22px;
 					--typescale-2-font-size: 14px;
@@ -44,7 +44,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 1200px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 22px;
 					--typescale-2-font-size: 20px;
@@ -52,7 +52,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 1800px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 16px;
 					--typescale-1-line-height: 24px;
 					--typescale-2-font-size: 20px;
@@ -100,7 +100,7 @@ describe('scss', function() {
 			}`
 		const css = `
 			@media screen and (min-width: 0) {
-				:global {
+				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
@@ -108,7 +108,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 600px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
@@ -116,7 +116,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 900px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 22px;
 					--typescale-2-font-size: 14px;
@@ -124,7 +124,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 1200px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 22px;
 					--typescale-2-font-size: 20px;
@@ -132,7 +132,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 1800px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 16px;
 					--typescale-1-line-height: 24px;
 					--typescale-2-font-size: 20px;
@@ -187,7 +187,7 @@ describe('scss', function() {
 			@include t.utility-classes($namespace: 'test');`
 		const css = `
 			@media screen and (min-width: 0) {
-				:global {
+				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
@@ -195,7 +195,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 600px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
@@ -203,7 +203,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 900px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 22px;
 					--typescale-2-font-size: 14px;
@@ -211,7 +211,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 1200px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 22px;
 					--typescale-2-font-size: 20px;
@@ -219,7 +219,7 @@ describe('scss', function() {
 				}
 			}
 			@media screen and (min-width: 1800px) {
-				:global {
+				:root {
 					--typescale-1-font-size: 16px;
 					--typescale-1-line-height: 24px;
 					--typescale-2-font-size: 20px;

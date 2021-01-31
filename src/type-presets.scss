@@ -234,7 +234,7 @@ $__presets: ();
 
 /// =================================== INIT ===================================
 
-:global {
+:root {
 	@each $bp, $size in $breakpoints {
 		@media screen and (min-width: $size) {
 			@each $key, $def in $__typescales {
