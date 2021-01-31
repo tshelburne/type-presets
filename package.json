@@ -20,15 +20,21 @@
   },
   "homepage": "https://github.com/tshelburne/react-children-by-type#readme",
   "scripts": {
-    "test": "mocha"
+    "build:docs": "sassdoc -d docs src",
+    "test": "mocha",
+    "prepublishOnly": "npm run build:docs"
   },
   "devDependencies": {
     "mocha": "^8.2.1",
-    "sass": "^1.32.5"
+    "sass": "^1.32.5",
+    "sassdoc": "^2.7.3"
   },
   "mocha": {
     "spec": "src/**/*.test.js",
     "watch": true,
-    "watch-files": ["src/*.scss", "src/*.test.js"]
+    "watch-files": [
+      "src/*.scss",
+      "src/*.test.js"
+    ]
   }
 }

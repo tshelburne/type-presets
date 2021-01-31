@@ -37,9 +37,9 @@ $default-transform: none !default;
 ///   );
 $default-spacing: normal !default;
 
-/// Default font family property value to use in presets
+/// Default breakpoints to be used for responsive typescales
 /// @access public
-/// @type font-family
+/// @type Map
 $breakpoints: (
 	xs: 0,
 	sm: 600px,
@@ -73,13 +73,13 @@ $typescales: () !default;
 ///   );
 $presets: () !default;
 
-/// ================================= HELPERS ==================================
+// ================================= HELPERS ==================================
 
 @function __map-get-default($map, $key, $def) {
 	@return if(map.has-key($map, $key), map.get($map, $key), $def);
 }
 
-/// =============================== DEFINITIONS ================================
+// =============================== DEFINITIONS ================================
 
 @function __define-typescale($xs, $scaled: ()) {
 	$sm: __map-get-default($scaled, sm, $xs);
@@ -116,7 +116,7 @@ $presets: () !default;
 	);
 }
 
-/// ================================== MIXINS ==================================
+// ================================== MIXINS ==================================
 
 $__typescales: ();
 @each $key, $def in $typescales {
@@ -135,7 +135,7 @@ $__presets: ();
 /// Use typescale in typographic element
 /// @access public
 /// @param {string} $key - name of pre-defined typescale from map
-/// @param {bool} $important (default false) - mark properties as !important in CSS
+/// @param {bool} $important [false] - mark properties as !important in CSS
 /// @example scss - Usage
 ///   @use 'type-presets' as t;
 ///
@@ -157,7 +157,7 @@ $__presets: ();
 /// Use type-preset in typographic element
 /// @access public
 /// @param {string} $key - name of pre-defined type preset from map
-/// @param {bool} $important (default false) - mark properties as !important in CSS
+/// @param {bool} $important [false] - mark properties as !important in CSS
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $presets: (
@@ -190,7 +190,7 @@ $__presets: ();
 
 /// Generate utility classes
 /// @access public
-/// @param {string} $namespace (default '') - namespace to put utility under
+/// @param {string} $namespace [''] - namespace to put utility under
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $typescales: (
@@ -232,7 +232,7 @@ $__presets: ();
 	}
 }
 
-/// =================================== INIT ===================================
+// =================================== INIT ===================================
 
 :root {
 	@each $bp, $size in $breakpoints {
