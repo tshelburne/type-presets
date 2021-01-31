@@ -76,7 +76,7 @@ $presets: () !default;
 /// ================================= HELPERS ==================================
 
 @function map-get-default($map, $key, $def) {
-	@return if(map.has-key($map, $key), map.get($map, $key), $def)
+	@return if(map.has-key($map, $key), map.get($map, $key), $def);
 }
 
 /// =============================== DEFINITIONS ================================
