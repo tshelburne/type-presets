@@ -1,0 +1,160 @@
+@use 'sass:map';
+@use 'sass:list';
+
+/// Default font family property value to use in presets
+/// @access public
+/// @type font-family
+/// @example scss - Usage
+///   @use 'type-presets' with (
+///     $default-family: 'Arial, sans-serif'
+///   );
+$default-family: unset !default;
+
+/// Default font weight property value to use in presets
+/// @access public
+/// @type font-family
+/// @example scss - Usage
+///   @use 'type-presets' with (
+///     $default-weight: 500
+///   );
+$default-weight: normal !default;
+
+/// Default text transform property value to use in presets
+/// @access public
+/// @type font-family
+/// @example scss - Usage
+///   @use 'type-presets' with (
+///     $default-transform: uppercase
+///   );
+$default-transform: none !default;
+
+/// Default letter spacing property value to use in presets
+/// @access public
+/// @type font-family
+/// @example scss - Usage
+///   @use 'type-presets' with (
+///     $default-spacing: .5
+///   );
+$default-spacing: normal !default;
+
+/// Default font family property value to use in presets
+/// @access public
+/// @type font-family
+$breakpoints: (
+	xs: 0,
+	sm: 600px,
+	md: 900px,
+	lg: 1200px,
+	xl: 1800px,
+) !default;
+
+/// A map of basic typescale definitions
+/// @access public
+/// @type Map
+/// @example scss - Usage
+///   @use 'type-presets' with (
+///     $typescales: (
+///       1: 12px (md: 14px, xl: 16px),
+///       2: 14px (lg: 20px),
+///     )
+///   );
+$typescales: () !default;
+
+/// A map of basic preset definitions
+/// @access public
+/// @type Map
+/// @example scss - Usage
+///   @use 'type-presets' with (
+///     $presets: (
+///       1: (scale: 1, family: 'Arial, sans-serif'),
+///       2: (scale: 1, family: 'Comic Sans'),
+///       3: (scale: 1, family: 'Comic Sans'),
+///     )
+///   );
+$presets: () !default;
+
+/// =============================== DEFINITIONS ================================
+
+@function __define-typescale($xs, $scaled: ()) {
+	$sm: if(map.has-key($scaled, sm), map.get($scaled, sm), $xs);
+	$md: if(map.has-key($scaled, md), map.get($scaled, md), $sm);
+	$lg: if(map.has-key($scaled, lg), map.get($scaled, lg), $md);
+	$xl: if(map.has-key($scaled, xl), map.get($scaled, xl), $lg);
+	$sizes: $xs $sm $md $lg $xl;
+
+	$scales: ();
+	@for $i from 1 through list.length($sizes) {
+		$size: list.nth($sizes, $i);
+		$media: list.nth(map.keys($breakpoints), $i);
+		$scale: (
+			font-size: $size,
+			line-height: $size + 8,
+		);
+		$scales: map.merge(
+			$scales,
+			(
+				$media: $scale,
+			)
+		);
+	}
+	@return $scales;
+}
+
+@function __define-type-preset(
+	$scale,
+	$family: $default-family,
+	$weight: $default-weight,
+	$transform: $default-transform,
+	$spacing: $default-spacing
+) {
+	@return (
+		scale: $scale,
+		font-family: $family,
+		font-weight: $weight,
+		text-transform: $transform,
+		letter-spacing: $spacing
+	);
+}
+
+/// ================================== MIXINS ==================================
+
+@mixin typescale($key, $important: false) {
+	$postfix: if($important, ' !important', '');
+
+	font-size: var(--typescale-#{$key}-font-size)#{$postfix};
+	line-height: var(--typescale-#{$key}-line-height)#{$postfix};
+}
+
+@mixin type-preset($key, $important: false) {
+	$preset: map.get($presets, $key);
+	$postfix: if($important, ' !important', '');
+
+	@include typescale(map.get($preset, 'scale'), $important);
+	font-family: #{map.get($preset, 'font-family')}#{$postfix};
+	font-weight: #{map.get($preset, 'font-weight')}#{$postfix};
+	text-transform: #{map.get($preset, 'text-transform')}#{$postfix};
+	letter-spacing: #{map.get($preset, 'letter-spacing')}#{$postfix};
+}
+
+/// =================================== INIT ===================================
+
+$__typescales: ();
+@each $key, $def in $typescales {
+	$xs: list.nth($def, 1);
+	$scaled: list.nth($def, 2);
+	$newscale: __define-typescale($xs, $scaled);
+	$__typescales: map.merge($__typescales, ($key: $newscale));
+}
+
+:global {
+	@each $bp, $size in $breakpoints {
+		@media screen and (min-width: $size) {
+			@each $key, $def in $__typescales {
+				$scale: map.get(map.get($__typescales, $key), $bp);
+
+				--typescale-#{$key}-font-size: #{map.get($scale, font-size)};
+				--typescale-#{$key}-line-height: #{map.get($scale, line-height)};
+			}
+		}
+	}
+}
