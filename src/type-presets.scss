@@ -73,13 +73,19 @@ $typescales: () !default;
 ///   );
 $presets: () !default;
 
+/// ================================= HELPERS ==================================
+
+@function map-get-default($map, $key, $def) {
+	@return if(map.has-key($map, $key), map.get($map, $key), $def)
+}
+
 /// =============================== DEFINITIONS ================================
 
 @function __define-typescale($xs, $scaled: ()) {
-	$sm: if(map.has-key($scaled, sm), map.get($scaled, sm), $xs);
-	$md: if(map.has-key($scaled, md), map.get($scaled, md), $sm);
-	$lg: if(map.has-key($scaled, lg), map.get($scaled, lg), $md);
-	$xl: if(map.has-key($scaled, xl), map.get($scaled, xl), $lg);
+	$sm: map-get-default($scaled, sm, $xs);
+	$md: map-get-default($scaled, md, $sm);
+	$lg: map-get-default($scaled, lg, $md);
+	$xl: map-get-default($scaled, xl, $lg);
 	$sizes: $xs $sm $md $lg $xl;
 
 	$scales: ();
@@ -100,23 +106,31 @@ $presets: () !default;
 	@return $scales;
 }
 
-@function __define-type-preset(
-	$scale,
-	$family: $default-family,
-	$weight: $default-weight,
-	$transform: $default-transform,
-	$spacing: $default-spacing
-) {
+@function __define-type-preset($def) {
 	@return (
-		scale: $scale,
-		font-family: $family,
-		font-weight: $weight,
-		text-transform: $transform,
-		letter-spacing: $spacing
+		scale: map.get($def, scale),
+		font-family: map-get-default($def, family, $default-family),
+		font-weight: map-get-default($def, weight, $default-weight),
+		text-transform: map-get-default($def, transform, $default-transform),
+		letter-spacing: map-get-default($def, spacing, $default-spacing)
 	);
 }
 
 /// ================================== MIXINS ==================================
+
+$__typescales: ();
+@each $key, $def in $typescales {
+	$xs: list.nth($def, 1);
+	$scaled: list.nth($def, 2);
+	$new-scale: __define-typescale($xs, $scaled);
+	$__typescales: map.merge($__typescales, ($key: $new-scale));
+}
+
+$__presets: ();
+@each $key, $def in $presets {
+	$new-preset: __define-type-preset($def);
+	$__presets: map.merge($__presets, ($key: $new-preset));
+}
 
 @mixin typescale($key, $important: false) {
 	$postfix: if($important, ' !important', '');
@@ -126,7 +140,7 @@ $presets: () !default;
 }
 
 @mixin type-preset($key, $important: false) {
-	$preset: map.get($presets, $key);
+	$preset: map.get($__presets, $key);
 	$postfix: if($important, ' !important', '');
 
 	@include typescale(map.get($preset, 'scale'), $important);
@@ -137,14 +151,6 @@ $presets: () !default;
 }
 
 /// =================================== INIT ===================================
-
-$__typescales: ();
-@each $key, $def in $typescales {
-	$xs: list.nth($def, 1);
-	$scaled: list.nth($def, 2);
-	$newscale: __define-typescale($xs, $scaled);
-	$__typescales: map.merge($__typescales, ($key: $newscale));
-}
 
 :global {
 	@each $bp, $size in $breakpoints {
