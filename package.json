@@ -1,0 +1,20 @@
+{
+  "name": "type-presets",
+  "version": "0.1.0",
+  "author": "Tim Shelburne",
+  "description": "Tools for using type presets in CSS",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "sass": "^1.32.5"
+  },
+  "mocha": {
+    "spec": "src/**/*.test.js",
+    "watch": true,
+    "watch-files": ["src/*.scss", "src/*.test.js"]
+  }
+}
