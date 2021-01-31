@@ -5,7 +5,7 @@
 /// @access public
 /// @type font-family
 /// @example scss - Usage
-///   @use 'type-presets' with (
+///   @use 'type-presets' as t with (
 ///     $default-family: 'Arial, sans-serif'
 ///   );
 $default-family: unset !default;
@@ -14,7 +14,7 @@ $default-family: unset !default;
 /// @access public
 /// @type font-family
 /// @example scss - Usage
-///   @use 'type-presets' with (
+///   @use 'type-presets' as t with (
 ///     $default-weight: 500
 ///   );
 $default-weight: normal !default;
@@ -23,7 +23,7 @@ $default-weight: normal !default;
 /// @access public
 /// @type font-family
 /// @example scss - Usage
-///   @use 'type-presets' with (
+///   @use 'type-presets' as t with (
 ///     $default-transform: uppercase
 ///   );
 $default-transform: none !default;
@@ -32,7 +32,7 @@ $default-transform: none !default;
 /// @access public
 /// @type font-family
 /// @example scss - Usage
-///   @use 'type-presets' with (
+///   @use 'type-presets' as t with (
 ///     $default-spacing: .5
 ///   );
 $default-spacing: normal !default;
@@ -52,7 +52,7 @@ $breakpoints: (
 /// @access public
 /// @type Map
 /// @example scss - Usage
-///   @use 'type-presets' with (
+///   @use 'type-presets' as t with (
 ///     $typescales: (
 ///       1: 12px (md: 14px, xl: 16px),
 ///       2: 14px (lg: 20px),
@@ -64,7 +64,7 @@ $typescales: () !default;
 /// @access public
 /// @type Map
 /// @example scss - Usage
-///   @use 'type-presets' with (
+///   @use 'type-presets' as t with (
 ///     $presets: (
 ///       1: (scale: 1, spacing: .5),
 ///       2: (scale: 1, family: 'Comic Sans', transform: uppercase),
@@ -132,6 +132,21 @@ $__presets: ();
 	$__presets: map.merge($__presets, ($key: $new-preset));
 }
 
+/// Use typescale in typographic element
+/// @access public
+/// @param {string} $key - name of pre-defined typescale from map
+/// @param {bool} $important (default false) - mark properties as !important in CSS
+/// @example scss - Usage
+///   @use 'type-presets' as t;
+///
+///   p {
+///     @include t.typescale(1);
+///   }
+/// @example css - Result
+///   p {
+///     font-size: var(--typescale-1-font-size);
+///     line-height: var(--typescale-1-line-height);
+///   }
 @mixin typescale($key, $important: false) {
 	$postfix: if($important, '!important', '');
 
@@ -139,6 +154,29 @@ $__presets: ();
 	line-height: var(--typescale-#{$key}-line-height)#{$postfix};
 }
 
+/// Use type-preset in typographic element
+/// @access public
+/// @param {string} $key - name of pre-defined type preset from map
+/// @param {bool} $important (default false) - mark properties as !important in CSS
+/// @example scss - Usage
+///   @use 'type-presets' as t with (
+///     $presets: (
+///       1: (scale: 1, spacing: .5),
+///     )
+///   );
+///
+///   p {
+///     @include t.type-preset(1);
+///   }
+/// @example css - Result
+///   p {
+///     font-size: var(--typescale-1-font-size);
+///     line-height: var(--typescale-1-line-height);
+///     font-family: unset;
+///     font-weight: normal;
+///     text-transform: none;
+///     letter-spacing: 0.5;
+///   }
 @mixin type-preset($key, $important: false) {
 	$preset: map.get($__presets, $key);
 	$postfix: if($important, ' !important', '');
@@ -150,6 +188,34 @@ $__presets: ();
 	letter-spacing: #{map.get($preset, 'letter-spacing')}#{$postfix};
 }
 
+/// Generate utility classes
+/// @access public
+/// @param {string} $namespace (default '') - namespace to put utility under
+/// @example scss - Usage
+///   @use 'type-presets' as t with (
+///     $typescales: (
+///       1: 12px (md: 14px, xl: 16px),
+///     ),
+///     $presets: (
+///       1: (scale: 1, spacing: .5),
+///     )
+///   );
+///
+///   @include t.utility-classes($namespace: );
+/// @example css - Result
+///   .test-u-typescale-1 {
+///     font-size: var(--typescale-1-font-size) !important;
+///     line-height: var(--typescale-1-line-height) !important;
+///   }
+///
+///   .test-u-type-preset-1 {
+///     font-size: var(--typescale-1-font-size) !important;
+///     line-height: var(--typescale-1-line-height) !important;
+///     font-family: unset !important;
+///     font-weight: normal !important;
+///     text-transform: none !important;
+///     letter-spacing: 0.5 !important;
+///   }
 @mixin utility-classes($namespace: '') {
 	$prefix: if($namespace == '', '', '#{$namespace}-');
 
