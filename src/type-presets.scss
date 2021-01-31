@@ -150,6 +150,22 @@ $__presets: ();
 	letter-spacing: #{map.get($preset, 'letter-spacing')}#{$postfix};
 }
 
+@mixin utility-classes($namespace: '') {
+	$prefix: if($namespace == '', '', '#{$namespace}-');
+
+	@each $key in map.keys($__typescales) {
+		.#{$prefix}u-typescale-#{$key} {
+			@include typescale($key, $important: true);
+		}
+	}
+
+	@each $key in map.keys($__presets) {
+		.#{$prefix}u-type-preset-#{$key} {
+			@include type-preset($key, $important: true);
+		}
+	}
+}
+
 /// =================================== INIT ===================================
 
 :global {

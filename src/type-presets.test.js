@@ -168,6 +168,103 @@ describe('scss', function() {
 			}`
 		expect(scss).toRender(css)
 	})
+
+	it('supports generating utility classes', function() {
+		const scss = `
+			@use 'type-presets' as t with (
+				$default-family: 'Arial, sans-serif',
+				$typescales: (
+					1: 12px (md: 14px, xl: 16px),
+					2: 14px (lg: 20px),
+				),
+				$presets: (
+					1: (scale: 1, spacing: .5),
+					2: (scale: 1, family: 'Comic Sans', transform: uppercase),
+					3: (scale: 2, family: 'Comic Sans', weight: 800),
+				)
+			);
+
+			@include t.utility-classes($namespace: 'test');`
+		const css = `
+			@media screen and (min-width: 0) {
+				:global {
+					--typescale-1-font-size: 12px;
+					--typescale-1-line-height: 20px;
+					--typescale-2-font-size: 14px;
+					--typescale-2-line-height: 22px;
+				}
+			}
+			@media screen and (min-width: 600px) {
+				:global {
+					--typescale-1-font-size: 12px;
+					--typescale-1-line-height: 20px;
+					--typescale-2-font-size: 14px;
+					--typescale-2-line-height: 22px;
+				}
+			}
+			@media screen and (min-width: 900px) {
+				:global {
+					--typescale-1-font-size: 14px;
+					--typescale-1-line-height: 22px;
+					--typescale-2-font-size: 14px;
+					--typescale-2-line-height: 22px;
+				}
+			}
+			@media screen and (min-width: 1200px) {
+				:global {
+					--typescale-1-font-size: 14px;
+					--typescale-1-line-height: 22px;
+					--typescale-2-font-size: 20px;
+					--typescale-2-line-height: 28px;
+				}
+			}
+			@media screen and (min-width: 1800px) {
+				:global {
+					--typescale-1-font-size: 16px;
+					--typescale-1-line-height: 24px;
+					--typescale-2-font-size: 20px;
+					--typescale-2-line-height: 28px;
+				}
+			}
+
+			.test-u-typescale-1 {
+				font-size: var(--typescale-1-font-size) !important;
+				line-height: var(--typescale-1-line-height) !important;
+			}
+
+			.test-u-typescale-2 {
+				font-size: var(--typescale-2-font-size) !important;
+				line-height: var(--typescale-2-line-height) !important;
+			}
+
+			.test-u-type-preset-1 {
+				font-size: var(--typescale-1-font-size) !important;
+				line-height: var(--typescale-1-line-height) !important;
+				font-family: Arial, sans-serif !important;
+				font-weight: normal !important;
+				text-transform: none !important;
+				letter-spacing: 0.5 !important;
+			}
+
+			.test-u-type-preset-2 {
+				font-size: var(--typescale-1-font-size) !important;
+				line-height: var(--typescale-1-line-height) !important;
+				font-family: Comic Sans !important;
+				font-weight: normal !important;
+				text-transform: uppercase !important;
+				letter-spacing: normal !important;
+			}
+
+			.test-u-type-preset-3 {
+				font-size: var(--typescale-2-font-size) !important;
+				line-height: var(--typescale-2-line-height) !important;
+				font-family: Comic Sans !important;
+				font-weight: 800 !important;
+				text-transform: none !important;
+				letter-spacing: normal !important;
+			}`
+		expect(scss).toRender(css)
+	})
 })
 
 // ---------------- HELPERS ----------------
