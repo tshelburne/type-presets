@@ -66,26 +66,26 @@ $typescales: () !default;
 /// @example scss - Usage
 ///   @use 'type-presets' with (
 ///     $presets: (
-///       1: (scale: 1, family: 'Arial, sans-serif'),
-///       2: (scale: 1, family: 'Comic Sans'),
-///       3: (scale: 1, family: 'Comic Sans'),
+///       1: (scale: 1, spacing: .5),
+///       2: (scale: 1, family: 'Comic Sans', transform: uppercase),
+///       3: (scale: 2, family: 'Comic Sans', weight: 800),
 ///     )
 ///   );
 $presets: () !default;
 
 /// ================================= HELPERS ==================================
 
-@function map-get-default($map, $key, $def) {
+@function __map-get-default($map, $key, $def) {
 	@return if(map.has-key($map, $key), map.get($map, $key), $def);
 }
 
 /// =============================== DEFINITIONS ================================
 
 @function __define-typescale($xs, $scaled: ()) {
-	$sm: map-get-default($scaled, sm, $xs);
-	$md: map-get-default($scaled, md, $sm);
-	$lg: map-get-default($scaled, lg, $md);
-	$xl: map-get-default($scaled, xl, $lg);
+	$sm: __map-get-default($scaled, sm, $xs);
+	$md: __map-get-default($scaled, md, $sm);
+	$lg: __map-get-default($scaled, lg, $md);
+	$xl: __map-get-default($scaled, xl, $lg);
 	$sizes: $xs $sm $md $lg $xl;
 
 	$scales: ();
@@ -109,10 +109,10 @@ $presets: () !default;
 @function __define-type-preset($def) {
 	@return (
 		scale: map.get($def, scale),
-		font-family: map-get-default($def, family, $default-family),
-		font-weight: map-get-default($def, weight, $default-weight),
-		text-transform: map-get-default($def, transform, $default-transform),
-		letter-spacing: map-get-default($def, spacing, $default-spacing)
+		font-family: __map-get-default($def, family, $default-family),
+		font-weight: __map-get-default($def, weight, $default-weight),
+		text-transform: __map-get-default($def, transform, $default-transform),
+		letter-spacing: __map-get-default($def, spacing, $default-spacing)
 	);
 }
 
