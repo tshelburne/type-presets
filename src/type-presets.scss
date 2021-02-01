@@ -2,9 +2,14 @@
 @use 'sass:meta';
 @use 'sass:list';
 
+////
+/// @group type-presets
+/// @author Tim Shelburne
+////
+
 /// Default font family property value to use in presets
 /// @access public
-/// @type font-family
+/// @type CSS font-family
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $default-family: 'Arial, sans-serif'
@@ -13,7 +18,7 @@ $default-family: unset !default;
 
 /// Default font weight property value to use in presets
 /// @access public
-/// @type font-family
+/// @type CSS font-weight
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $default-weight: 500
@@ -22,7 +27,7 @@ $default-weight: normal !default;
 
 /// Default text transform property value to use in presets
 /// @access public
-/// @type font-family
+/// @type CSS text-transform
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $default-transform: uppercase
@@ -31,7 +36,7 @@ $default-transform: none !default;
 
 /// Default letter spacing property value to use in presets
 /// @access public
-/// @type font-family
+/// @type CSS letter-spacing
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $default-spacing: .5
@@ -74,6 +79,9 @@ $__breakpoints-with-min: map.merge((__min: 0), $breakpoints);
 /// A map of basic typescale definitions
 /// @access public
 /// @type Map
+/// @prop {CSS font-size|(CSS font-size, CSS line-height)} typescale.[ref].[1] - the base size value at the smallest screen size
+/// @prop {Map} typescale.[ref].[2] [()] - a map of breakpoint sizes
+/// @prop {CSS font-size|(CSS font-size, CSS line-height)} typescale.[ref].[2].[bp_ref] - the size value that takes precedence at the referenced breakpoint
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $typescales: (
@@ -86,6 +94,11 @@ $typescales: () !default;
 /// A map of basic preset definitions
 /// @access public
 /// @type Map
+/// @prop {number} preset.[ref].scale - the key of the typescale to use for the preset
+/// @prop {CSS font-family} preset.[ref].family [$default-family] - the preset's font family
+/// @prop {CSS font-weight} preset.[ref].weight [$default-weight] - the preset's font weight
+/// @prop {CSS text-transform} preset.[ref].transform [$default-transform] - the preset's text transform
+/// @prop {CSS letter-spacing} preset.[ref].spacing [$default-spacing] - the preset's letter spacing
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
 ///     $presets: (
@@ -115,8 +128,8 @@ $presets: () !default;
 @function __define-typescale($base, $scaled: ()) {
 	// build the list of sizes with each size falling back to the previous if it isn't defined
 	$sizes: __size($base),; // the comma is necessary to initialize a list of lists
-	@each $k in map.keys($breakpoints) {
-		$size: __map-get-default($scaled, $k, __list-last($sizes));
+	@each $ref in map.keys($breakpoints) {
+		$size: __map-get-default($scaled, $ref, __list-last($sizes));
 		$sizes: list.append($sizes, __size($size));
 	}
 
@@ -152,22 +165,23 @@ $presets: () !default;
 // ================================== MIXINS ==================================
 
 $__typescales: ();
-@each $k, $v in $typescales {
-	$xs: list.nth($v, 1);
-	$scaled: list.nth($v, 2);
+@each $ref, $def in $typescales {
+	$xs: list.nth($def, 1);
+	$scaled: list.nth($def, 2);
 	$new-scale: __define-typescale($xs, $scaled);
-	$__typescales: map.merge($__typescales, ($k: $new-scale));
+	$__typescales: map.merge($__typescales, ($ref: $new-scale));
 }
 
 $__presets: ();
-@each $k, $v in $presets {
-	$new-preset: __define-type-preset($v);
-	$__presets: map.merge($__presets, ($k: $new-preset));
+@each $ref, $def in $presets {
+	$new-preset: __define-type-preset($def);
+	$__presets: map.merge($__presets, ($ref: $new-preset));
 }
 
 /// Use typescale in typographic element
 /// @access public
-/// @param {string} $k - name of pre-defined typescale from map
+/// @see $typescales
+/// @param {string} $ref - name of pre-defined typescale from map
 /// @param {bool} $important [false] - mark properties as !important in CSS
 /// @example scss - Usage
 ///   @use 'type-presets' as t;
@@ -180,16 +194,17 @@ $__presets: ();
 ///     font-size: var(--typescale-1-font-size);
 ///     line-height: var(--typescale-1-line-height);
 ///   }
-@mixin typescale($k, $important: false) {
+@mixin typescale($ref, $important: false) {
 	$postfix: if($important, '!important', '');
 
-	font-size: var(--typescale-#{$k}-font-size)#{$postfix};
-	line-height: var(--typescale-#{$k}-line-height)#{$postfix};
+	font-size: var(--typescale-#{$ref}-font-size)#{$postfix};
+	line-height: var(--typescale-#{$ref}-line-height)#{$postfix};
 }
 
 /// Use type-preset in typographic element
 /// @access public
-/// @param {string} $k - name of pre-defined type preset from map
+/// @see $presets
+/// @param {string} $ref - name of pre-defined type preset from map
 /// @param {bool} $important [false] - mark properties as !important in CSS
 /// @example scss - Usage
 ///   @use 'type-presets' as t with (
@@ -210,8 +225,8 @@ $__presets: ();
 ///     text-transform: none;
 ///     letter-spacing: 0.5;
 ///   }
-@mixin type-preset($k, $important: false) {
-	$preset: map.get($__presets, $k);
+@mixin type-preset($ref, $important: false) {
+	$preset: map.get($__presets, $ref);
 	$postfix: if($important, ' !important', '');
 
 	@include typescale(map.get($preset, 'scale'), $important);
@@ -252,15 +267,15 @@ $__presets: ();
 @mixin utility-classes($namespace: '') {
 	$prefix: if($namespace == '', '', '#{$namespace}-');
 
-	@each $k in map.keys($__typescales) {
-		.#{$prefix}u-typescale-#{$k} {
-			@include typescale($k, $important: true);
+	@each $ref in map.keys($__typescales) {
+		.#{$prefix}u-typescale-#{$ref} {
+			@include typescale($ref, $important: true);
 		}
 	}
 
-	@each $k in map.keys($__presets) {
-		.#{$prefix}u-type-preset-#{$k} {
-			@include type-preset($k, $important: true);
+	@each $ref in map.keys($__presets) {
+		.#{$prefix}u-type-preset-#{$ref} {
+			@include type-preset($ref, $important: true);
 		}
 	}
 }
@@ -270,11 +285,11 @@ $__presets: ();
 :root {
 	@each $bp, $size in $__breakpoints-with-min {
 		@media screen and (min-width: $size) {
-			@each $k in map.keys($__typescales) {
-				$scale: map.get(map.get($__typescales, $k), $bp);
+			@each $ref in map.keys($__typescales) {
+				$scale: map.get(map.get($__typescales, $ref), $bp);
 
-				--typescale-#{$k}-font-size: #{map.get($scale, font-size)};
-				--typescale-#{$k}-line-height: #{map.get($scale, line-height)};
+				--typescale-#{$ref}-font-size: #{map.get($scale, font-size)};
+				--typescale-#{$ref}-line-height: #{map.get($scale, line-height)};
 			}
 		}
 	}

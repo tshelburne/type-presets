@@ -176,10 +176,18 @@ All configuration is exposed via [Sass module configuration](https://sass-lang.c
 	$default-weight: 500,
 	$default-transform: uppercase,
 	$default-spacing: 1.5,
+	$line-height-scale: 10,
+
+	$breakpoints: (
+		small: 400px,
+		med: 600px,
+		largo: 1000px,
+		extralargo: 2000px,
+	),
 
 	$typescales: (
-		1: 12px (md: 14px, xl: 16px),
-		2: 14px (lg: 20px),
+		1: 12px (med: 14px, extralargo: (16px 32px)),
+		2: (14px 18px) (largo: 20px),
 	),
 	$presets: (
 		1: (scale: 1, spacing: .5),
