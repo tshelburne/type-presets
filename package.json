@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/tshelburne/type-presets/issues"
   },
-  "homepage": "https://github.com/tshelburne/type-presets#readme",
+  "homepage": "https://tshelburne.github.io/type-presets/",
   "scripts": {
     "build:docs": "sassdoc -d docs src",
     "test": "mocha",
