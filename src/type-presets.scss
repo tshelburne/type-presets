@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:meta';
 @use 'sass:list';
 
 /// Default font family property value to use in presets
@@ -44,7 +45,7 @@ $default-spacing: normal !default;
 ///   @use 'type-presets' as t with (
 ///     $line-height-scale: 10
 ///   );
-$line-height-scale: 8;
+$line-height-scale: 8 !default;
 
 /// Default breakpoints to be used for responsive typescales - note that the values should be increasing
 /// @access public
@@ -107,25 +108,31 @@ $presets: () !default;
 
 // =============================== DEFINITIONS ================================
 
+@function __size($v) {
+	@return if(meta.type-of($v) == 'list', $v, ($v, $v + $line-height-scale));
+}
+
 @function __define-typescale($base, $scaled: ()) {
-	$sizes: $base;
+	// build the list of sizes with each size falling back to the previous if it isn't defined
+	$sizes: __size($base),; // the comma is necessary to initialize a list of lists
 	@each $k in map.keys($breakpoints) {
 		$size: __map-get-default($scaled, $k, __list-last($sizes));
-		$sizes: list.append($sizes, $size);
+		$sizes: list.append($sizes, __size($size));
 	}
 
+	// convert the sizes to scales with a simple map
+	// we have to use @for b/c duplicated size values yield incorrect indexes
 	$scales: ();
 	@for $i from 1 through list.length($sizes) {
 		$size: list.nth($sizes, $i);
 		$media: list.nth(map.keys($__breakpoints-with-min), $i);
-		$scale: (
-			font-size: $size,
-			line-height: $size + $line-height-scale,
-		);
 		$scales: map.merge(
 			$scales,
 			(
-				$media: $scale,
+				$media: (
+					font-size: list.nth($size, 1),
+					line-height: list.nth($size, 2),
+				),
 			)
 		);
 	}

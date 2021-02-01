@@ -316,12 +316,12 @@ describe('scss', function() {
 	})
 
 	it('supports customizing line heights', function() {
-		it('supports defining and using typescales', function() {
 		const scss = `
 			@use 'type-presets' as t with (
 				$line-height-scale: 10,
 				$typescales: (
 					1: 12px (md: 14px, xl: 16px),
+					2: (12px 20px) (md: 13px, xl: (16px 32px)),
 				)
 			);`
 		const css = `
@@ -329,34 +329,43 @@ describe('scss', function() {
 				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 22px;
+					--typescale-2-font-size: 12px;
+					--typescale-2-line-height: 20px;
 				}
 			}
 			@media screen and (min-width: 600px) {
 				:root {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 22px;
+					--typescale-2-font-size: 12px;
+					--typescale-2-line-height: 20px;
 				}
 			}
 			@media screen and (min-width: 900px) {
 				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 24px;
+					--typescale-2-font-size: 13px;
+					--typescale-2-line-height: 23px;
 				}
 			}
 			@media screen and (min-width: 1200px) {
 				:root {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 24px;
+					--typescale-2-font-size: 13px;
+					--typescale-2-line-height: 23px;
 				}
 			}
 			@media screen and (min-width: 1800px) {
 				:root {
 					--typescale-1-font-size: 16px;
 					--typescale-1-line-height: 26px;
+					--typescale-2-font-size: 16px;
+					--typescale-2-line-height: 32px;
 				}
 			}`
 		expect(scss).toRender(css)
-	})
 	})
 })
 
