@@ -31,7 +31,6 @@
   },
   "mocha": {
     "spec": "src/**/*.test.js",
-    "watch": true,
     "watch-files": [
       "src/*.scss",
       "src/*.test.js"
