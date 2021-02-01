@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Tim Shelburne <shelburt02@gmail.com> (https://github.com/tshelburne/)",
   "description": "Tools for using type presets in CSS",
-  "main": "index.js",
+  "style": "src/type-presets.scss",
   "license": "MIT",
   "keywords": [
     "typography",
