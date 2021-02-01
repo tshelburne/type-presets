@@ -22,7 +22,9 @@
   "scripts": {
     "build:docs": "sassdoc -d docs src",
     "test": "mocha",
-    "preversion": "npm run build:docs"
+    "preversion": "npm test",
+    "version": "npm run build:docs && git add docs",
+    "postversion": "git push && git push --tags"
   },
   "devDependencies": {
     "mocha": "^8.2.1",
