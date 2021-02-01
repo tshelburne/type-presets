@@ -16,9 +16,9 @@
     "url": "git+https://github.com/tshelburne/type-presets.git"
   },
   "bugs": {
-    "url": "https://github.com/tshelburne/react-children-by-type/issues"
+    "url": "https://github.com/tshelburne/type-presets/issues"
   },
-  "homepage": "https://github.com/tshelburne/react-children-by-type#readme",
+  "homepage": "https://github.com/tshelburne/type-presets#readme",
   "scripts": {
     "build:docs": "sassdoc -d docs src",
     "test": "mocha",
