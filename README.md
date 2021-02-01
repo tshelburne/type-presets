@@ -1,6 +1,8 @@
 type-presets
 ============
 
+[![CircleCI](https://circleci.com/gh/tshelburne/type-presets.svg?style=svg)](https://circleci.com/gh/tshelburne/type-presets)
+
 ## Intention
 
 Using typography throughout a complicated app gets complicated fast. I choose to trust the experts.
