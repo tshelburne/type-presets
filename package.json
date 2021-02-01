@@ -1,6 +1,6 @@
 {
   "name": "type-presets",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Tim Shelburne <shelburt02@gmail.com> (https://github.com/tshelburne/)",
   "description": "Tools for using type presets in CSS",
   "style": "src/type-presets.scss",
