@@ -167,7 +167,7 @@ $presets: () !default;
 $__typescales: ();
 @each $ref, $def in $typescales {
 	$xs: list.nth($def, 1);
-	$scaled: list.nth($def, 2);
+	$scaled: if(list.length($def) > 1, list.nth($def, 2), ());
 	$new-scale: __define-typescale($xs, $scaled);
 	$__typescales: map.merge($__typescales, ($ref: $new-scale));
 }
