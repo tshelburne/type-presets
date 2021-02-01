@@ -7,8 +7,9 @@ describe('scss', function() {
 			@use 'type-presets' as t with (
 				$typescales: (
 					1: 12px (md: 14px, xl: 16px),
-					2: 14px (lg: 20px),
+					2: (14px, 20px) (lg: 20px),
 					3: 16px,
+					4: (18px, 24px),
 				)
 			);
 
@@ -25,9 +26,11 @@ describe('scss', function() {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
-					--typescale-2-line-height: 22px;
+					--typescale-2-line-height: 20px;
 					--typescale-3-font-size: 16px;
 					--typescale-3-line-height: 24px;
+					--typescale-4-font-size: 18px;
+					--typescale-4-line-height: 24px;
 				}
 			}
 			@media screen and (min-width: 600px) {
@@ -35,9 +38,11 @@ describe('scss', function() {
 					--typescale-1-font-size: 12px;
 					--typescale-1-line-height: 20px;
 					--typescale-2-font-size: 14px;
-					--typescale-2-line-height: 22px;
+					--typescale-2-line-height: 20px;
 					--typescale-3-font-size: 16px;
 					--typescale-3-line-height: 24px;
+					--typescale-4-font-size: 18px;
+					--typescale-4-line-height: 24px;
 				}
 			}
 			@media screen and (min-width: 900px) {
@@ -45,9 +50,11 @@ describe('scss', function() {
 					--typescale-1-font-size: 14px;
 					--typescale-1-line-height: 22px;
 					--typescale-2-font-size: 14px;
-					--typescale-2-line-height: 22px;
+					--typescale-2-line-height: 20px;
 					--typescale-3-font-size: 16px;
 					--typescale-3-line-height: 24px;
+					--typescale-4-font-size: 18px;
+					--typescale-4-line-height: 24px;
 				}
 			}
 			@media screen and (min-width: 1200px) {
@@ -58,6 +65,8 @@ describe('scss', function() {
 					--typescale-2-line-height: 28px;
 					--typescale-3-font-size: 16px;
 					--typescale-3-line-height: 24px;
+					--typescale-4-font-size: 18px;
+					--typescale-4-line-height: 24px;
 				}
 			}
 			@media screen and (min-width: 1800px) {
@@ -68,6 +77,8 @@ describe('scss', function() {
 					--typescale-2-line-height: 28px;
 					--typescale-3-font-size: 16px;
 					--typescale-3-line-height: 24px;
+					--typescale-4-font-size: 18px;
+					--typescale-4-line-height: 24px;
 				}
 			}
 
