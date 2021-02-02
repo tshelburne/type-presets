@@ -230,13 +230,13 @@ $__presets: ();
 ///   }
 @mixin type-preset($ref, $important: false) {
 	$preset: map.get($__presets, $ref);
-	$postfix: if($important, ' !important', '');
+	$postfix: if($important, '!important', '');
 
 	@include typescale(map.get($preset, 'scale'), $important);
-	font-family: #{map.get($preset, 'font-family')}#{$postfix};
-	font-weight: #{map.get($preset, 'font-weight')}#{$postfix};
-	text-transform: #{map.get($preset, 'text-transform')}#{$postfix};
-	letter-spacing: #{map.get($preset, 'letter-spacing')}#{$postfix};
+	font-family: "#{map.get($preset, 'font-family')}"#{$postfix};
+	font-weight: #{map.get($preset, 'font-weight')} #{$postfix};
+	text-transform: #{map.get($preset, 'text-transform')} #{$postfix};
+	letter-spacing: #{map.get($preset, 'letter-spacing')} #{$postfix};
 }
 
 /// Generate utility classes

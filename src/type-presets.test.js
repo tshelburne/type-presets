@@ -165,7 +165,7 @@ describe('scss', function() {
 			.preset-1 {
 				font-size: var(--typescale-1-font-size);
 				line-height: var(--typescale-1-line-height);
-				font-family: Arial, sans-serif;
+				font-family: "Arial, sans-serif";
 				font-weight: normal;
 				text-transform: none;
 				letter-spacing: 0.5;
@@ -174,7 +174,7 @@ describe('scss', function() {
 			.preset-2 {
 				font-size: var(--typescale-1-font-size) !important;
 				line-height: var(--typescale-1-line-height) !important;
-				font-family: Comic Sans !important;
+				font-family: "Comic Sans" !important;
 				font-weight: normal !important;
 				text-transform: uppercase !important;
 				letter-spacing: normal !important;
@@ -183,7 +183,7 @@ describe('scss', function() {
 			.preset-3 {
 				font-size: var(--typescale-2-font-size);
 				line-height: var(--typescale-2-line-height);
-				font-family: Comic Sans;
+				font-family: "Comic Sans";
 				font-weight: 800;
 				text-transform: none;
 				letter-spacing: normal;
@@ -262,7 +262,7 @@ describe('scss', function() {
 			.test-u-type-preset-1 {
 				font-size: var(--typescale-1-font-size) !important;
 				line-height: var(--typescale-1-line-height) !important;
-				font-family: Arial, sans-serif !important;
+				font-family: "Arial, sans-serif" !important;
 				font-weight: normal !important;
 				text-transform: none !important;
 				letter-spacing: 0.5 !important;
@@ -271,7 +271,7 @@ describe('scss', function() {
 			.test-u-type-preset-2 {
 				font-size: var(--typescale-1-font-size) !important;
 				line-height: var(--typescale-1-line-height) !important;
-				font-family: Comic Sans !important;
+				font-family: "Comic Sans" !important;
 				font-weight: normal !important;
 				text-transform: uppercase !important;
 				letter-spacing: normal !important;
@@ -280,7 +280,7 @@ describe('scss', function() {
 			.test-u-type-preset-3 {
 				font-size: var(--typescale-2-font-size) !important;
 				line-height: var(--typescale-2-line-height) !important;
-				font-family: Comic Sans !important;
+				font-family: "Comic Sans" !important;
 				font-weight: 800 !important;
 				text-transform: none !important;
 				letter-spacing: normal !important;
